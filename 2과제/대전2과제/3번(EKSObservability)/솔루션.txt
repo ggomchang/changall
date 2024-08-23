@@ -1,0 +1,15 @@
+1. vpc
+
+2. bastion
+
+3. eks
+
+--내가 할거--
+
+1.terraform 실행
+
+2. bastion에 필요한거 설치(docker, kubectl, eksctl)
+
+3. eks clsuter 생성
+
+4. ecr image 생성

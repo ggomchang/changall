@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer
+  namespace: wsi
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: customer
+  template:
+    metadata:
+      labels:
+        app: customer
+        node: app
+    spec:
+      tolerations:
+        - key: type
+          value: "app"
+          effect: NoSchedule
+          operator: Equal
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodeType
+                    operator: In
+                    values:
+                      - app
+      containers:
+        - name: app
+          image: 702661606257.dkr.ecr.ap-northeast-2.amazonaws.com/customer:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 500m
+              memory: "200Mi"
+            requests:
+              cpu: 500m
+              memory: "200Mi"
+          env:
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secret
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secret
+                  key: MYSQL_PASSWORD
+            - name: MYSQL_HOST
+              value: wsi-rds-mysql.croepkksxwka.ap-northeast-2.rds.amazonaws.com
+            - name: MYSQL_PORT
+              value: "3307"
+            - name: MYSQL_DBNAME
+              value: wsi
+      volumes:
+        - name: containerdsock
+          hostPath:
+            path: /run/containerd/containerd.sock

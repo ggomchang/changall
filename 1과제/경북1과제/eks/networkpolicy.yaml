@@ -1,0 +1,33 @@
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: cusomter-deny-product
+  namespace: wsi
+spec:
+  selector: app == 'customer'
+  ingress:
+    - action: Deny
+      source:
+        selector: app == 'product'
+    - action: Allow
+      source:
+        nets:
+          - 0.0.0.0/0
+
+---
+
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: product-deny-customer
+  namespace: wsi
+spec:
+  selector: app == 'product'
+  ingress:
+    - action: Deny
+      source:
+        selector: app == 'customer'
+    - action: Allow
+      source:
+        nets:
+          - 0.0.0.0/0

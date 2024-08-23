@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: blue-green-app
+  namespace: app
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: 702661606257.dkr.ecr.ap-northeast-2.amazonaws.com/eks-cicd-ecr:latest
+        ports:
+        - containerPort: 8080
+  strategy:
+    blueGreen:
+      activeService: app-service
+      autoPromotionEnabled: true
+      autoPromotionSeconds: 0  # 프로모션 지연 시간설정
+      scaleDownDelaySeconds: 5    # 축소 지연 시간설정 0으로 하면 pod 삭제안됨

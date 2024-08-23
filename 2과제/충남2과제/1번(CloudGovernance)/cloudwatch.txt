@@ -1,0 +1,8 @@
+employee 유저가 wsc2024-instance-role에 정책을 추가했을 때 
+
+{ $.userIdentity.userName = Employee && $.eventName = AttachRolePolicy && $.requestParameters.roleName = wsc2024-instance-role }
+
+이벤트 트리거추가해서 lambda 실행해야 함
+
+cloudwatchAlarm에서 lambda 실행할 수 있게 해줌
+aws lambda add-permission --function-name arn:aws:lambda:ap-northeast-2:702661606257:function:wsc2024-gvn-Lambda --principal lambda.alarms.cloudwatch.amazonaws.com --action lambda:InvokeFunction --statement-id cloudwatchAlarm

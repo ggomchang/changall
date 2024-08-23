@@ -1,0 +1,16 @@
+1. vpc
+
+2. bastion
+
+3. eks
+
+--내가 할거--
+1. terraform 실행
+
+2. bastion에 필요한거 설치(docker, eksctl, kubectl)
+
+3. eks cluster 생성(그동안 매니페스트 작성)
+
+4. image 생성
+
+5. 나머지 매니페스트 적용

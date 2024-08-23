@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: wsc2024-lattice-svc-net
+  namespace: wsc2024
+spec:
+  gatewayClassName: amazon-vpc-lattice
+  listeners:
+  - name: http
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: Same

@@ -1,0 +1,19 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: default
+spec:
+  kubelet:
+    maxPods: 7
+  amiFamily: Bottlerocket
+  role: "KarpenterNodeRole-apdev-eks-cluster" # replace with your cluster name
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "apdev-eks-cluster" # replace with your cluster name
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "apdev-eks-cluster" # replace with your cluster name
+  amiSelectorTerms:
+    - id: "ami-055bc3ff5d8f4aefe"
+  tags:
+    Name: "apdev-eks-node"

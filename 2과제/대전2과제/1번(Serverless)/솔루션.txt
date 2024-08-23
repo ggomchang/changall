@@ -1,0 +1,3 @@
+terraform 실행
+
+테스트하고 dynamodb에 있는 데이터는 다 지울것

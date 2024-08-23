@@ -1,0 +1,61 @@
+{
+    "Name": "GETandPOSTallow",
+    "Priority": 1,
+    "Statement": {
+      "AndStatement": {
+        "Statements": [
+          {
+            "NotStatement": {
+              "Statement": {
+                "ByteMatchStatement": {
+                  "SearchString": "GET",
+                  "FieldToMatch": {
+                    "Method": {}
+                  },
+                  "TextTransformations": [
+                    {
+                      "Priority": 0,
+                      "Type": "NONE"
+                    }
+                  ],
+                  "PositionalConstraint": "EXACTLY"
+                }
+              }
+            }
+          },
+          {
+            "NotStatement": {
+              "Statement": {
+                "ByteMatchStatement": {
+                  "SearchString": "POST",
+                  "FieldToMatch": {
+                    "Method": {}
+                  },
+                  "TextTransformations": [
+                    {
+                      "Priority": 0,
+                      "Type": "NONE"
+                    }
+                  ],
+                  "PositionalConstraint": "EXACTLY"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "Action": {
+      "Block": {
+        "CustomResponse": {
+          "ResponseCode": 405,
+          "CustomResponseBodyKey": "405"
+        }
+      }
+    },
+    "VisibilityConfig": {
+      "SampledRequestsEnabled": true,
+      "CloudWatchMetricsEnabled": true,
+      "MetricName": "qwe"
+    }
+  }

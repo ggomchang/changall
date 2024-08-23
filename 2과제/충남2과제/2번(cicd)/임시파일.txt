@@ -1,0 +1,7 @@
+
+sed -i 's#"image": "702661606257.dkr.ecr.ap-northeast-2.amazonaws.com/app:.*"#"image": "702661606257.dkr.ecr.ap-northeast-2.amazonaws.com/app:'"$CODEBUILD_BUILD_ID"'"#' taskdef.json \
+sed -i 's#"imageUri": "702661606257.dkr.ecr.ap-northeast-2.amazonaws.com/app:.*"#"imageUri": "702661606257.dkr.ecr.ap-northeast-2.amazonaws.com/app:'"$CODEBUILD_BUILD_ID"'"#' imagedefinitions.json
+
+네임스페이스는 codepipeline만들고 codecommit stage에서 variables를 아무거나 바꿔주면 됨
+
+수동승인은 codebuild랑 codedeploy사이에 만들면 됨 commit url은 중간에 #{네임스페이스.CommitId}넣어주면 됨

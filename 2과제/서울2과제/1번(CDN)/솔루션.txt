@@ -1,0 +1,9 @@
+terraform 실행
+
+s3 파일 업로드
+
+Object caching을 **Use origin cache headers** 로 선택 -> query string 모두 포함
+
+만약에 에러나면 bastion에서 다시 압축해야 함
+
+zip -r 파일들 resizing.zip

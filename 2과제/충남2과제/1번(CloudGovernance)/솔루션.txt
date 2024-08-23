@@ -1,0 +1,14 @@
+1. ima user 생성
+
+2. iam role 생성
+
+3. 로그그룹 생성
+
+4. cloudtrail 생성
+
+5. 람다 생성
+
+
+--해야할거--
+
+1. terraform 실행

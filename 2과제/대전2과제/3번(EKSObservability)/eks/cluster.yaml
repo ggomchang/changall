@@ -1,0 +1,42 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: wsi-eks-cluster
+  region: ap-northeast-2 
+  version: "1.29"
+
+iam:
+  withOIDC: true
+
+vpc:
+  subnets:
+    private:
+      ap-northeast-2a:
+        id: subnet-04dccdcd5a8caf026
+      ap-northeast-2b:
+        id: subnet-0e86bd78ca3afc45d
+
+managedNodeGroups:
+  - name: app-nodegroup
+    minSize: 1
+    desiredCapacity: 1
+    maxSize: 16
+    labels:
+      node: app
+    instanceType: c5.large
+    privateNetworking: true
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        externalDNS: true
+        certManager: true
+        appMesh: true
+        appMeshPreview: true
+        ebs: true
+        fsx: true
+        efs: true
+        awsLoadBalancerController: true
+        xRay: true
+        cloudWatch: true

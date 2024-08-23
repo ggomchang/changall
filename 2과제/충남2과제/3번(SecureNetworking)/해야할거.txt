@@ -1,0 +1,25 @@
+1. vpc
+
+2. ec2
+
+3. dynamodb
+
+4. s3
+
+5. alb
+
+--내가 할거--
+
+1. terraform 실행
+
+2. s3에 앱 업로드하고 다운로드하기
+
+2. ec2에 앱 실행
+
+- aws region 설정
+- templates폴더 만들어서 안에 index.html넣어줘야 한다.
+- nohup python3 app.py &
+
+3. nat삭제
+
+4. 테스트

@@ -1,0 +1,57 @@
+1. vpc 구성
+
+
+2. transitvpc
+
+
+3. bastion
+
+
+4. vpc lattice
+
+- 그냥 ma-vpc만 연결 해놓으면 됨
+
+5. rds
+
+
+6. eks
+
+
+7. container image
+
+
+8. s3
+
+
+9. cloudfront
+
+10. eks 매니페스트 배포, alb controller, gateway api controller(vpc lattice)
+
+- https://www.gateway-api-controller.eks.aws.dev/latest/guides/deploy/
+
+여기서 하는데 helm으로 설치할 떄 처음부터 수정된거로 설치하기 
+--set=serviceAccount.create=false 이거 추가해야 함
+--reuse-values 이거 없애야 함
+그리고 prod-vpc가 서비스네트워크에 연결이 되는데 그거는 삭제 해줘야 함
+
+lattice가 다 안되면 helm으로 지웠다가 다시 설치하기
+
+lattice배포순서(gatewayclass -> gateway -> routepolicy -> route)
+
+--해야할거--
+
+- terraform 실행
+
+- eks cluster 생성
+
+- 컨테이너 이미지 빌드
+
+- s3에 index.html 업로드
+
+- rds 테이블 생성
+
+- cloudfront alb 연결
+
+- vpc lattice에 prod vpc연결해제
+
+- curl로 꼭 cloudfront indexhtml 테스트해보기

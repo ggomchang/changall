@@ -1,0 +1,109 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: wsi-eks-cluster
+  region: ap-northeast-2
+  version: '1.29'
+
+vpc:
+  subnets:
+    private:
+      ap-northeast-2a:
+        id: subnet-0838269a8c84837b7
+      ap-northeast-2b:
+        id: subnet-0e2f4ad2c0ab25e35
+  # clusterEndpoints:
+  #   privateAccess: true
+  #   publicAccess: false
+
+secretsEncryption:
+  keyARN: arn:aws:kms:ap-northeast-2:702661606257:key/cedf5f2f-c3d8-4f6d-9082-5f9193a15719
+
+fargateProfiles:
+  - name: wsi-app-fargate
+    selectors:
+      - namespace: wsi
+        labels:
+          app: order
+    podExecutionRoleARN: arn:aws:iam::702661606257:role/fargatePodExecutionRole
+
+managedNodeGroups:
+  - name: wsi-app-nodegroup
+    updateConfig:
+      maxUnavailable: 1
+    labels:
+      nodeType: app
+    amiFamily: Bottlerocket
+    instanceType: m5.xlarge
+    instanceName: wsi-app-node
+    minSize: 2
+    maxSize: 64
+    desiredCapacity: 2
+    volumeSize: 30
+    privateNetworking: true
+    taints:
+      - key: type
+        value: "app"
+        effect: NoSchedule
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+  - name: wsi-addon-nodegroup
+    updateConfig:
+      maxUnavailable: 1
+    labels:
+      nodeType: addon
+    amiFamily: Bottlerocket
+    instanceType: t4g.large
+    instanceName: wsi-addon-node
+    minSize: 2
+    maxSize: 64
+    desiredCapacity: 2
+    volumeSize: 30
+    privateNetworking: true
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        externalDNS: true
+        certManager: true
+        appMesh: true
+        appMeshPreview: true
+        ebs: true
+        fsx: true
+        efs: true
+        awsLoadBalancerController: true
+        xRay: true
+        cloudWatch: true
+
+iam:
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+    - metadata:
+        name: fluent-bit
+        namespace: logging
+      attachPolicyARNs:
+      - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
+
+addons:
+  - name: vpc-cni
+    version: latest
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+    resolveConflicts: overwrite
+  - name: amazon-cloudwatch-observability
+    version: latest
+    tags:
+      team: eks
+    resolveConflicts: overwrite
+

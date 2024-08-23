@@ -1,0 +1,40 @@
+curl https://raw.githubusercontent.com/fluent/fluent-bit/master/install.sh | sh
+
+sudo systemctl start fluent-bit
+sudo systemctl enable fluent-bit
+
+sudo ln -s /opt/fluent-bit/bin/fluent-bit /usr/local/bin/fluent-bit
+
+---설정파일경로---
+cd /etc/fluent-bit
+
+#fluent-bit.conf
+[INPUT]
+    Name tail
+    Path /log/app.log
+    Tag applog
+    Parser logformat
+
+[FILTER]
+    Name grep
+    Match *
+    Exclude path /healthcheck
+
+[OUTPUT]
+    Name opensearch 
+    Match applog
+    Host search-wsi-opensearch-exad3jfddcv4rt2r2io5oxdsfy.ap-northeast-2.es.amazonaws.com
+    Port 443
+    AWS_Auth On
+    AWS_Region ap-northeast-2
+    TLS On
+    Index app-log
+    Replace_Dots On
+    Suppress_Type_Name On
+
+
+#parsers.conf
+[PARSER]
+    Name logformat
+    Format regex
+    Regex ^(?<clientip>[^ ]*) - \[(?<time>[^\]]*)\] "(?<method>[^ ]*) (?<path>[^ ]*) (?<protocol>[^"]*)" (?<responsecode>[^ ]*) "(?<useragent>[^"]*)

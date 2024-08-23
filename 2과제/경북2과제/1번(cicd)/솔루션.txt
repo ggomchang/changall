@@ -1,0 +1,24 @@
+1. vpc 생성
+
+2. bastiont 생성
+
+3. alb 생성
+
+4. ecs 생성
+
+5. codepipeline생성
+
+--내가할거--
+
+1. terraform 실행
+
+2. bastion에 docker, git install
+
+3. 이미지 생성&업로드
+
+4. taskdef.json, appspec.yaml, buildspec.yaml, Dockerfile 수정
+
+5. codecommit에 업로드
+
+git config --global credential.helper '!aws codecommit credential-helper $@'
+git config --global credential.UseHttpPath true

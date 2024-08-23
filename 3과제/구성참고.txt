@@ -1,0 +1,56 @@
+rds 스토리지 400이상으로 해주고 iops를 늘려줌
+
+참고 : https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/cni-increase-ip-addresses.html (pod ip할당)
+참고 : https://karpenter.sh/docs/getting-started/getting-started-with-karpenter/ (karpenter)
+
+--ip할당개수 증량--
+
+kubectl set env daemonset aws-node -n kube-system ENABLE_PREFIX_DELEGATION=true
+kubectl set env ds aws-node -n kube-system WARM_PREFIX_TARGET=1
+kubectl set env ds aws-node -n kube-system WARM_IP_TARGET=5
+kubectl set env ds aws-node -n kube-system MINIMUM_IP_TARGET=2
+
+curl -O https://raw.githubusercontent.com/awslabs/amazon-eks-ami/master/templates/al2/runtime/max-pods-calculator.sh
+chmod +x max-pods-calculator.sh
+./max-pods-calculator.sh --instance-type t3.micro --cni-version 1.9.0-eksbuild.1 --cni-prefix-delegation-enabled
+
+
+--karpenter install--
+
+export TEMPOUT="$(mktemp)"
+
+curl -fsSL https://raw.githubusercontent.com/aws/karpenter-provider-aws/v1.0.0/website/content/en/docs/getting-started/getting-started-with-karpenter/cloudformation.yaml  > "${TEMPOUT}" \
+&& aws cloudformation deploy \
+  --stack-name "Karpenter-apdev-eks-cluster" \
+  --template-file "${TEMPOUT}" \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides "ClusterName=apdev-eks-cluster"
+
+helm registry logout public.ecr.aws
+
+helm upgrade --install karpenter oci://public.ecr.aws/karpenter/karpenter --version "1.0.0" --namespace "karpenter" --create-namespace \
+  --set "settings.clusterName=apdev-eks-cluster" \
+  --set "settings.interruptionQueue=apdev-eks-cluster" \
+  --set controller.resources.requests.cpu=0.3 \
+  --set controller.resources.requests.memory=128Mi \
+  --set controller.resources.limits.cpu=0.3 \
+  --set controller.resources.limits.memory=128Mi \
+  --wait
+
+그 전에 subnet에 tag 추가(karpenter.sh/discovery: "apdev-eks-cluster") nodeclass -> nodepool 배포
+
+---내가 할거---
+
+1. terraform
+
+2. karpenter cloudformation stack 배포
+
+3. eks clsuter 생성
+  
+- pod 제한 해제
+- karpenter 배포
+- metric server 배포
+- hpa 배포
+- app 배포
+
+4. rds index 생성

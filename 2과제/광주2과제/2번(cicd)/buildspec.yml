@@ -1,0 +1,38 @@
+version: 0.2
+env:
+  shell: bash
+phases:
+  install:
+    commands:
+      - |
+        git config --global credential.helper '!aws codecommit credential-helper $@' \
+        && git config --global credential.UseHttpPath true
+  pre_build:
+    commands:
+      - |
+        echo Logging in to Amazon ECR...a \
+        && aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/
+  build:
+    commands:
+      - |
+        echo Building the Docker image \
+        && DATE=$(date '+%Y%m%d%H%M%S') \
+        && docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG$DATE . \
+        && docker tag $IMAGE_REPO_NAME:$IMAGE_TAG$DATE $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG$DATE \
+        && docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG$DATE
+  post_build:
+    commands:
+      - |
+        AWS_ECR_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG$DATE \
+        && echo Build completed on $DATE \
+        && mkdir test \
+        && cd test \
+        && git config --global user.email "asd@asd.com" \
+        && git config --global user.name "asd" \
+        && git clone https://git-codecommit.$AWS_DEFAULT_REGION.amazonaws.com/v1/repos/$OPS_REPO_NAME \
+        && cd $OPS_REPO_NAME/eks \
+        && sed "s|image: .*|image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG$DATE|" rollouts.yaml > tmpfile && mv tmpfile rollouts.yaml \
+        && cd .. \
+        && git add . \
+        && git commit -m "update image tag $DATE" \
+        && git push origin main

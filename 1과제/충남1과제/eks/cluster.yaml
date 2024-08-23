@@ -1,0 +1,83 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: wsc2024-eks-cluster
+  region: us-east-1 
+  version: "1.29"
+
+secretsEncryption:
+  keyARN: arn:aws:kms:us-east-1:702661606257:key/f379e60d-52e0-433b-9c6c-5fdc20ff9723
+
+vpc:
+  subnets:
+    private:
+      us-east-1a:
+        id: subnet-0716e622ddff4345e
+      us-east-1b:
+        id: subnet-039608b6c5f2b8f21
+
+managedNodeGroups:
+  - name: wsc2024-db-application-ng
+    taints:
+      - key: wsi
+        value: "app"
+        effect: NoSchedule
+    minSize: 2
+    desiredCapacity: 2
+    maxSize: 10
+    labels:
+      app: db
+    instanceType: t3.medium
+    instanceName: wsc2024-db-application-node
+    privateNetworking: true
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        externalDNS: true
+        certManager: true
+        appMesh: true
+        appMeshPreview: true
+        ebs: true
+        fsx: true
+        efs: true
+        awsLoadBalancerController: true
+        xRay: true
+        cloudWatch: true
+  - name: wsc2024-other-ng
+    minSize: 2
+    desiredCapacity: 2
+    maxSize: 10
+    labels:
+      app: other
+    instanceType: t3.medium
+    instanceName: wsc2024-other-node
+    privateNetworking: true
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        externalDNS: true
+        certManager: true
+        appMesh: true
+        appMeshPreview: true
+        ebs: true
+        fsx: true
+        efs: true
+        awsLoadBalancerController: true
+        xRay: true
+        cloudWatch: true
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
+    
+iam:
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true

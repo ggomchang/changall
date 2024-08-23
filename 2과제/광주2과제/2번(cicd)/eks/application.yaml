@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+
+spec:
+  project: default
+  
+  source:
+    repoURL: 'https://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/arocd-cicd-repo'
+    path: eks
+    targetRevision: HEAD
+  
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: app
+  
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

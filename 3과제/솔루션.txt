@@ -1,0 +1,29 @@
+vpc
+
+ec2
+
+eks
+
+rds
+
+나머지
+
+-- 내가 할거 --
+
+terraform 실행
+
+karpenter cloudformation stack 생성
+
+eks cluster 생성
+
+pod ip 할당 제한 해제
+
+karpenter 설치(nodeclass, nodepool 배포)
+
+metrics server 설치
+
+app 배포
+
+hpa 배포
+
+alb 생성하면 cloudfront에 바로 연결하기

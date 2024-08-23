@@ -1,0 +1,13 @@
+1. vpc  
+
+2. ec2
+
+3. dynamodb
+
+4. api gateway
+
+--내가 할거--
+
+1. terraform 실행
+
+2. 채점전 dynamodb item 삭제

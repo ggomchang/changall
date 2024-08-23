@@ -1,0 +1,3 @@
+https://hidekuma.github.io/dynamodb/api%20gateway/aws/serverless/aws-dynamo-with-api-gateway/
+
+https://docs.aws.amazon.com/ko_kr/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html#input-variable-reference

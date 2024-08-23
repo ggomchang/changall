@@ -1,0 +1,11 @@
+1. vpc
+
+2. ec2
+
+3. cloudwatch
+
+--내가 할거--
+
+1. terraform 실행
+
+2. ssm으로 접속후 확인(terraform 실행하고 5분정도 기다린 후 테스트)

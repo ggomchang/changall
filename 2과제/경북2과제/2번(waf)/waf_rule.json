@@ -1,0 +1,55 @@
+{
+  "Name": "alg_none_block",
+  "Priority": 0,
+  "Action": {
+    "Block": {
+      "CustomResponse": {
+        "ResponseCode": 401,
+        "CustomResponseBodyKey": "401"
+      }
+    }
+  },
+  "VisibilityConfig": {
+    "SampledRequestsEnabled": true,
+    "CloudWatchMetricsEnabled": true,
+    "MetricName": "alg_none_block"
+  },
+  "Statement": {
+    "AndStatement": {
+      "Statements": [
+        {
+          "ByteMatchStatement": {
+            "FieldToMatch": {
+              "UriPath": {}
+            },
+            "PositionalConstraint": "EXACTLY",
+            "SearchString": "/v1/token/verify",
+            "TextTransformations": [
+              {
+                "Type": "NONE",
+                "Priority": 0
+              }
+            ]
+          }
+        },
+        {
+          "ByteMatchStatement": {
+            "FieldToMatch": {
+              "SingleHeader": {
+                "Name": "authorization"
+              }
+            },
+            "PositionalConstraint": "CONTAINS",
+            "SearchString": "\"alg\": \"none\"",
+            "TextTransformations": [
+              {
+                "Type": "BASE64_DECODE",
+                "Priority": 0
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

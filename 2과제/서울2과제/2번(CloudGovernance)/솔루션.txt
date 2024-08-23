@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+terrafrom 실행
+=======
+1. vpc
+
+2. ec2
+
+3. lambda
+
+4. config
+
+--내가 할거--
+
+1. terraform 실행
+>>>>>>> recovery-branch

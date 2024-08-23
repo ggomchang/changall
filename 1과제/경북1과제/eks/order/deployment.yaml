@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: wsi
+  name: order
+  labels:
+    app: order
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+      annotations:
+        kubectl.kubernetes.io/default-container: order
+    spec:
+      serviceAccountName: "dynamodb"
+      containers:
+        - name: order
+          image: 702661606257.dkr.ecr.ap-northeast-2.amazonaws.com/order-ecr:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "0.5"
+              memory: 0.5G
+          env:
+            - name: AWS_REGION
+              value: ap-northeast-2

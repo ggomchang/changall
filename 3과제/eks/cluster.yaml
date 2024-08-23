@@ -1,0 +1,56 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: apdev-eks-cluster
+  region: ap-northeast-2
+  version: "1.29"
+  tags:
+    karpenter.sh/discovery: apdev-eks-cluster
+
+vpc:
+  subnets:
+    private:
+      ap-northeast-2a:
+        id: subnet-0ab88162ff59d0ef5
+      ap-northeast-2b:
+        id: subnet-01ba4b645b5b9100e
+
+iam:
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+  podIdentityAssociations:
+  - namespace: "karpenter"
+    serviceAccountName: karpenter
+    roleName: apdev-eks-cluster-karpenter
+    permissionPolicyARNs:
+    - arn:aws:iam::702661606257:policy/KarpenterControllerPolicy-apdev-eks-cluster
+
+iamIdentityMappings:
+- arn: "arn:aws:iam::702661606257:role/KarpenterNodeRole-apdev-eks-cluster"
+  username: system:node:{{EC2PrivateDNSName}}
+  groups:
+  - system:bootstrappers
+  - system:nodes
+
+managedNodeGroups:
+- instanceType: t3.micro
+  instanceName: apdev-eks-node
+  amiFamily: Bottlerocket
+  name: apdev-eks-cluster-ng
+  privateNetworking: true
+  updateConfig:
+    maxUnavailable: 1
+  minSize: 2
+  desiredCapacity: 2
+  maxSize: 15
+  maxPodsPerNode: 7
+  securityGroups:
+    attachIDs: ["sg-06ee450ede15ace57"]
+
+addons:
+- name: eks-pod-identity-agent

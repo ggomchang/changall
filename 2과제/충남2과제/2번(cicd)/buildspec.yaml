@@ -1,0 +1,39 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - |
+        git config --global credential.helper '!aws codecommit credential-helper $@' \
+        && git config --global credential.UseHttpPath true
+
+  pre_build:
+    commands: 
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - echo 'FROM python:3.12-alpine' > Dockerfile
+      - echo 'WORKDIR /app' >> Dockerfile
+      - echo 'COPY . .' >> Dockerfile
+      - echo 'RUN pip install -r requirements.txt' >> Dockerfile
+      - echo 'RUN apk update' >> Dockerfile
+      - echo 'RUN apk add curl' >> Dockerfile
+      - echo 'CMD ["python3", "main.py"]' >> Dockerfile
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG   
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image to Amazon ECR...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo Updating task definition...
+
+artifacts:
+  files:
+    - appspec.yaml
+    - taskdef.json

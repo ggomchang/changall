@@ -1,0 +1,107 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: wsi-eks-cluster
+  region: ap-northeast-2 
+  version: "1.29"
+
+vpc:
+  subnets:
+    private:
+      ap-northeast-2a:
+        id: subnet-0152b19edb03c54bb
+      ap-northeast-2b:
+        id: subnet-0846da938f82c3441
+
+fargateProfiles:
+  - name: wsi-app-fargate-profile
+    selectors:
+      - namespace: wsi
+        labels:
+          app: order
+    podExecutionRoleARN: arn:aws:iam::702661606257:role/fargatePodExecutionRole
+
+managedNodeGroups:
+  - name: wsi-app-nodegroup
+    taints:
+      - key: wsi
+        value: "app"
+        effect: NoSchedule
+    minSize: 2
+    desiredCapacity: 4
+    maxSize: 10
+    labels:
+      wsi: app
+    instanceType: t3.large
+    instanceName: wsi-app-node
+    privateNetworking: true
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        externalDNS: true
+        certManager: true
+        appMesh: true
+        appMeshPreview: true
+        ebs: true
+        fsx: true
+        efs: true
+        awsLoadBalancerController: true
+        xRay: true
+        cloudWatch: true
+  - name: wsi-addon-nodegroup
+    minSize: 2
+    desiredCapacity: 4
+    maxSize: 10
+    labels:
+      wsi: addon
+    instanceType: t3.medium
+    instanceName: wsi-addon-node
+    privateNetworking: true
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        externalDNS: true
+        certManager: true
+        appMesh: true
+        appMeshPreview: true
+        ebs: true
+        fsx: true
+        efs: true
+        awsLoadBalancerController: true
+        xRay: true
+        cloudWatch: true
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
+
+iam:
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+
+addons:
+- name: vpc-cni
+  version: latest
+  tags:
+    team: eks
+  attachPolicyARNs:
+    - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+  resolveConflicts: overwrite
+- name: kube-proxy
+  version: latest
+  tags:
+    team: eks
+  resolveConflicts: overwrite
+- name: coredns
+  version: latest
+  tags:
+    team: eks
+  resolveConflicts: overwrite

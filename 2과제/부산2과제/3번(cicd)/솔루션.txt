@@ -1,0 +1,19 @@
+--- codecommit ---
+git config --global credential.helper '!aws codecommit credential-helper $@'
+git config --global credential.UseHttpPath true
+
+
+확장자 yaml말고 yml로 하자
+
+
+--- 해야 할거 ---
+1. terraform 실행
+
+2. Bastion에 docker, git 설치
+
+3. scripts 폴더에 sh 스크립트 수정
+
+4. codecommit에 애플리케이션 push
+
+에러나면 참고
+crlf를 lf로 바꾸자

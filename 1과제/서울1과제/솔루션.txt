@@ -1,0 +1,48 @@
+1. vpc
+
+2. ec2
+
+3. dynamodb
+
+4. eks
+
+5. rds
+
+6. s3
+
+7. cloudfront
+
+--내가 할거--
+
+1. terraform
+
+2. eks cluster 생성
+
+- cluster 생성하고 update(생성할 때는 public으로 생성하자)
+
+  파일수정해서 update하거나 명령어로 update
+  파일 - eksctl utils update-cluster-vpc-config -f cluster.yaml --approve
+  명령어 - eksctl utils update-cluster-vpc-config --cluster=wsi-eks-cluster --private-access=true --public-access=false --approve
+  
+- cluster udpate 하고 eks관련 sg 전부에 bastion sg 추가
+
+- secert생성전에 reloader install 해야 함(https://kmaster.tistory.com/95)
+  helm repo add stakater https://stakater.github.io/stakater-charts
+  helm repo update
+  helm install reloader stakater/reloader
+  
+- 배포순서(cluster -> ns -> secret -> fargatefluentbit -> fluentbit -> app -> ingress)
+- pod가 ec2의 iam권한을 사용하지 못하게
+  https://aws.github.io/aws-eks-best-practices/security/docs/iam/#restrict-access-to-the-instance-profile-assigned-to-the-worker-node
+  ($ aws ec2 modify-instance-metadata-options --instance-id <value> --http-tokens required --http-put-response-hop-limit 1 명령어 실행해야 함)
+  curl http://169.254.169.254/latest/api/token 해봤을 때 안되면 됨
+
+3. ecr image 생성
+
+4. mysql table 생성
+
+5. s3업로드(error.html도 만들어서 업로드해줘야 함)
+
+6. coudfront alb 등록
+
+7. 채점전에 healthcheck 로그있으면 로그스트림삭제하고 fluentbit 다시생성(꼭 로그스트림을 삭제해줘야 함)

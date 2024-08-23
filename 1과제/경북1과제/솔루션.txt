@@ -1,0 +1,27 @@
+1. vpc
+
+2. bastion
+
+3. eks
+
+--내가 할거--
+
+1. s3 비번호 변경
+
+2. terraform 실행
+
+3. bastion에 필요한거 설치(docker, kubectl, eksctl, helm, mysql)
+
+4. eks cluster 생성
+ns -> fluentd -> fluent-bit -> fargate-fluent-bit -> secret -> app -> ingress -> networkpolicy
+- calico 설치
+
+5. ecr image 생성
+
+6. s3 파일 업로드(암호화설정)
+
+7. cloudfront alb 연결(헤더넣기)
+
+8. waf에 alb 연결
+
+9. 로그 한번씩 띄우기

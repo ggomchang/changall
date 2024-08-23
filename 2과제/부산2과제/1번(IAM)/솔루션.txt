@@ -1,0 +1,6 @@
+
+
+--- 해야 할거 ---
+1. terraform 실행
+
+password: Password01!

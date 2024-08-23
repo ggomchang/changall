@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  namespace: wsi
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+        - name: app
+          image: 702661606257.dkr.ecr.ap-northeast-2.amazonaws.com/order:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AWS_REGION
+              value: ap-northeast-2
+      serviceAccountName: dynamodb

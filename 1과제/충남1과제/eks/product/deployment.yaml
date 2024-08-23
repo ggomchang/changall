@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: wsc2024
+  name: product-deploy
+  labels:
+    app: product
+spec:
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: product
+  template:
+    metadata:
+      labels: 
+        app: product
+    spec:
+      tolerations:
+        - key: wsi
+          operator: Equal
+          value: "app"
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - "db"
+      containers:
+      - name: product
+        image: 702661606257.dkr.ecr.us-east-1.amazonaws.com/product-repo:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 200m
+          requests:
+            cpu: 200m
+        env:
+          - name: MYSQL_USER
+            value: "admin"
+          - name: MYSQL_PASSWORD
+            value: "Skill53##"
+          - name: MYSQL_HOST
+            value: wsc2024-db-cluster.cluster-cvuu26s24sdo.us-east-1.rds.amazonaws.com
+          - name: MYSQL_PORT
+            value: "3306"
+          - name: MYSQL_DBNAME
+            value: "wsc2024_db"
