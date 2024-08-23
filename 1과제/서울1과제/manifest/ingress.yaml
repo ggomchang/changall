@@ -6,7 +6,7 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/load-balancer-name: wsi-alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/subnets: subnet-027e4220235b855a1, subnet-0f1a53ab1f750678e
+    alb.ingress.kubernetes.io/subnets: subnet-008f03fa6e002497a, subnet-0dffdc8a7ba87de2c
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-path: /healthcheck
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: "5"
@@ -14,7 +14,7 @@ metadata:
     alb.ingress.kubernetes.io/healthy-threshold-count: "2"
     alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
     alb.ingress.kubernetes.io/target-group-attributes: deregistration_delay.timeout_seconds=0
-    alb.ingress.kubernetes.io/security-groups: sg-0b63b28a0ea2df0e6
+    alb.ingress.kubernetes.io/security-groups: sg-09c7ae04b6c905e68
     alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
 spec:
   ingressClassName: alb

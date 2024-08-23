@@ -13,7 +13,7 @@ metadata:
   name: aws-logging
   namespace: aws-observability
 data:
-  flb_log_cw: "true"  # Set to true to ship Fluent Bit process logs to CloudWatch.
+  flb_log_cw: "false"  # Set to true to ship Fluent Bit process logs to CloudWatch.
   filters.conf: |
     [FILTER]
         Name grep

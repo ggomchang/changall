@@ -15,6 +15,7 @@ spec:
       labels:
         app: customer
         node: app
+      name: customer
     spec:
       tolerations:
         - key: type

@@ -5,6 +5,14 @@
 3. eks
 
 --내가 할거--
+
+!!!!!!!!!!
+EKS생성 후 root user kube auth file 복사
+sudo cp /home/ec2-user/.kube root/.kube -r
+sudo ls -al /root/.kube
+테스트 꼭 하기
+!!!!!!!!!!
+
 1. terraform 실행
 
 2. bastion에 필요한거 설치(docker, eksctl, kubectl)

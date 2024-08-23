@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: wsi-eks-cluster
+  name: wsi-test-cluster
   region: ap-northeast-2
   version: '1.29'
 
@@ -10,15 +10,15 @@ vpc:
   subnets:
     private:
       ap-northeast-2a:
-        id: subnet-0838269a8c84837b7
+        id: subnet-02858b4f0799c8239
       ap-northeast-2b:
-        id: subnet-0e2f4ad2c0ab25e35
+        id: subnet-09e54e73e7c4bac13
   # clusterEndpoints:
   #   privateAccess: true
   #   publicAccess: false
 
 secretsEncryption:
-  keyARN: arn:aws:kms:ap-northeast-2:702661606257:key/cedf5f2f-c3d8-4f6d-9082-5f9193a15719
+  keyARN: arn:aws:kms:ap-northeast-2:702661606257:key/7cae393b-9bdc-411f-add5-0c97d115d94a
 
 fargateProfiles:
   - name: wsi-app-fargate

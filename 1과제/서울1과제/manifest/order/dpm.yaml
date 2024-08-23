@@ -14,6 +14,7 @@ spec:
     metadata:
       labels:
         app: order
+      name: order
     spec:
       containers:
         - name: app
