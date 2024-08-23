@@ -14,7 +14,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   is_ipv6_enabled = false
 
   default_cache_behavior {
-    viewer_protocol_policy = "redirect-to-https"
+    viewer_protocol_policy = "allow-all"
     cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6" #CachingOptimized
     allowed_methods = ["GET", "HEAD"]
     cached_methods = ["GET", "HEAD"]
