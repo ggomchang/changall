@@ -15,7 +15,7 @@ resource "aws_cloudfront_distribution" "cdn" {
 
   default_cache_behavior {
     viewer_protocol_policy = "allow-all"
-    cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6" #CachingOptimized
+    cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" #CachingDisabled
     origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3" # All Viewer
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods = ["GET", "HEAD"]
