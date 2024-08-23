@@ -6,7 +6,7 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/load-balancer-name: wsi-app-alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/subnets: subnet-07ebedd081d807340, subnet-086149b3cf987ba6e
+    alb.ingress.kubernetes.io/subnets: subnet-065e8f55a30ea8b29, subnet-0b2a8083e9abefb75
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-path: /healthcheck
     alb.ingress.kubernetes.io/healthcheck-interval-seconds: "5"

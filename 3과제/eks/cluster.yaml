@@ -11,9 +11,9 @@ vpc:
   subnets:
     private:
       ap-northeast-2a:
-        id: subnet-0ab88162ff59d0ef5
+        id: subnet-08524fc9e01b5c67b
       ap-northeast-2b:
-        id: subnet-01ba4b645b5b9100e
+        id: subnet-0878e01123ab29c1c
 
 iam:
   withOIDC: true
@@ -50,7 +50,7 @@ managedNodeGroups:
   maxSize: 15
   maxPodsPerNode: 7
   securityGroups:
-    attachIDs: ["sg-06ee450ede15ace57"]
+    attachIDs: ["sg-0558ed9e7ddef10da"]
 
 addons:
 - name: eks-pod-identity-agent
