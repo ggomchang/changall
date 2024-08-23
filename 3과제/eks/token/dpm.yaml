@@ -15,7 +15,7 @@ spec:
         node: app
     spec:
       containers:
-        - name: app
+        - name: token
           image: 702661606257.dkr.ecr.ap-northeast-2.amazonaws.com/token:latest
           ports:
             - containerPort: 8080
