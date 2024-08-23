@@ -1,0 +1,75 @@
+{
+  "Name": "employee-method-rule",
+  "Priority": 1,
+  "Statement": {
+    "AndStatement": {
+      "Statements": [
+        {
+          "ByteMatchStatement": {
+            "SearchString": "/v1/employee",
+            "FieldToMatch": {
+              "UriPath": {}
+            },
+            "TextTransformations": [
+              {
+                "Priority": 0,
+                "Type": "NONE"
+              }
+            ],
+            "PositionalConstraint": "EXACTLY"
+          }
+        },
+        {
+          "NotStatement": {
+            "Statement": {
+              "ByteMatchStatement": {
+                "SearchString": "GET",
+                "FieldToMatch": {
+                  "Method": {}
+                },
+                "TextTransformations": [
+                  {
+                    "Priority": 0,
+                    "Type": "NONE"
+                  }
+                ],
+                "PositionalConstraint": "EXACTLY"
+              }
+            }
+          }
+        },
+        {
+          "NotStatement": {
+            "Statement": {
+              "ByteMatchStatement": {
+                "SearchString": "POST",
+                "FieldToMatch": {
+                  "Method": {}
+                },
+                "TextTransformations": [
+                  {
+                    "Priority": 0,
+                    "Type": "NONE"
+                  }
+                ],
+                "PositionalConstraint": "EXACTLY"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "Action": {
+    "Block": {
+      "CustomResponse": {
+        "ResponseCode": 403
+      }
+    }
+  },
+  "VisibilityConfig": {
+    "SampledRequestsEnabled": true,
+    "CloudWatchMetricsEnabled": true,
+    "MetricName": "employee-method-rule"
+  }
+}

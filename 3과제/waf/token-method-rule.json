@@ -1,0 +1,56 @@
+{
+    "Name": "token-method-rule",
+    "Priority": 4,
+    "Action": {
+      "Block": {
+        "CustomResponse": {
+          "ResponseCode": "403"
+        }
+      }
+    },
+    "VisibilityConfig": {
+      "SampledRequestsEnabled": true,
+      "CloudWatchMetricsEnabled": true,
+      "MetricName": "token-method-rule"
+    },
+    "Statement": {
+      "AndStatement": {
+        "Statements": [
+          {
+            "ByteMatchStatement": {
+              "FieldToMatch": {
+                "UriPath": {}
+              },
+              "PositionalConstraint": "EXACTLY",
+              "SearchString": "/v1/token",
+              "TextTransformations": [
+                {
+                  "Type": "NONE",
+                  "Priority": 0
+                }
+              ]
+            }
+          },
+          {
+            "NotStatement": {
+              "Statement": {
+                "ByteMatchStatement": {
+                  "FieldToMatch": {
+                    "Method": {}
+                  },
+                  "PositionalConstraint": "EXACTLY",
+                  "SearchString": "POST",
+                  "TextTransformations": [
+                    {
+                      "Type": "NONE",
+                      "Priority": 0
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }

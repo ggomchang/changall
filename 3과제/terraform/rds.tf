@@ -33,15 +33,15 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
-resource "aws_db_parameter_group" "parameter_group" {
-  name = "apdev-parameter-group"
-  family = "mysql8.0"
+# resource "aws_db_parameter_group" "parameter_group" {
+#   name = "apdev-parameter-group"
+#   family = "mysql8.0"
 
-  parameter {
-    name  = "max_connections"
-    value = "100"
-  }
-}
+#   parameter {
+#     name  = "max_connections"
+#     value = "100"
+#   }
+# }
 
 resource "aws_db_instance" "rds_instance" {
   engine = "mysql"
@@ -57,10 +57,8 @@ resource "aws_db_instance" "rds_instance" {
   storage_encrypted = true
   skip_final_snapshot = true
   storage_type = "gp3"
-  parameter_group_name = aws_db_parameter_group.parameter_group.name
+  # parameter_group_name = aws_db_parameter_group.parameter_group.name
   allocated_storage = 400
-  iops = 64000
-  storage_throughput = 1000
 
   vpc_security_group_ids = [
     aws_security_group.rds_sg.id

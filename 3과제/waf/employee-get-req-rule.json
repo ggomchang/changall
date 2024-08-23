@@ -1,0 +1,70 @@
+{
+  "Name": "employee-get-rule",
+  "Priority": 2,
+  "Action": {
+    "Block": {
+      "CustomResponse": {
+        "ResponseCode": 403
+      }
+    }
+  },
+  "VisibilityConfig": {
+    "SampledRequestsEnabled": true,
+    "CloudWatchMetricsEnabled": true,
+    "MetricName": "employee-get-rule"
+  },
+  "Statement": {
+    "AndStatement": {
+      "Statements": [
+        {
+          "ByteMatchStatement": {
+            "FieldToMatch": {
+              "Method": {}
+            },
+            "PositionalConstraint": "EXACTLY",
+            "SearchString": "GET",
+            "TextTransformations": [
+              {
+                "Type": "NONE",
+                "Priority": 0
+              }
+            ]
+          }
+        },
+        {
+          "NotStatement": {
+            "Statement": {
+              "RegexMatchStatement": {
+                "FieldToMatch": {
+                  "QueryString": {}
+                },
+                "TextTransformations": [
+                  {
+                    "Type": "NONE",
+                    "Priority": 0
+                  }
+                ],
+                "RegexString": "^(first_name=[^&]+&last_name=[^&]+|last_name=[^&]+&first_name=[^&]+)$"
+              }
+            }
+          }
+        },
+        {
+          "ByteMatchStatement": {
+            "FieldToMatch": {
+              "UriPath": {}
+            },
+            "PositionalConstraint": "EXACTLY",
+            "SearchString": "/v1/employee",
+            "TextTransformations": [
+              {
+                "Type": "NONE",
+                "Priority": 0
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

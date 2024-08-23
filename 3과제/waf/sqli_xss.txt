@@ -1,0 +1,1 @@
+add rules -> aws managed rule groups -> core rule set & sql database

@@ -1,0 +1,107 @@
+{
+  "Name": "employee-post-gender",
+  "Priority": 3,
+  "Statement": {
+    "AndStatement": {
+      "Statements": [
+        {
+          "NotStatement": {
+            "Statement": {
+              "ByteMatchStatement": {
+                "SearchString": "M",
+                "FieldToMatch": {
+                  "JsonBody": {
+                    "MatchPattern": {
+                      "IncludedPaths": [
+                        "/gender"
+                      ]
+                    },
+                    "MatchScope": "ALL",
+                    "InvalidFallbackBehavior": "NO_MATCH",
+                    "OversizeHandling": "CONTINUE"
+                  }
+                },
+                "TextTransformations": [
+                  {
+                    "Priority": 0,
+                    "Type": "NONE"
+                  }
+                ],
+                "PositionalConstraint": "EXACTLY"
+              }
+            }
+          }
+        },
+        {
+          "ByteMatchStatement": {
+            "SearchString": "POST",
+            "FieldToMatch": {
+              "Method": {}
+            },
+            "TextTransformations": [
+              {
+                "Priority": 0,
+                "Type": "NONE"
+              }
+            ],
+            "PositionalConstraint": "EXACTLY"
+          }
+        },
+        {
+          "NotStatement": {
+            "Statement": {
+              "ByteMatchStatement": {
+                "SearchString": "F",
+                "FieldToMatch": {
+                  "JsonBody": {
+                    "MatchPattern": {
+                      "IncludedPaths": [
+                        "/gender"
+                      ]
+                    },
+                    "MatchScope": "ALL",
+                    "OversizeHandling": "CONTINUE"
+                  }
+                },
+                "TextTransformations": [
+                  {
+                    "Priority": 0,
+                    "Type": "NONE"
+                  }
+                ],
+                "PositionalConstraint": "EXACTLY"
+              }
+            }
+          }
+        },
+        {
+          "ByteMatchStatement": {
+            "SearchString": "/v1/employee",
+            "FieldToMatch": {
+              "UriPath": {}
+            },
+            "TextTransformations": [
+              {
+                "Priority": 0,
+                "Type": "NONE"
+              }
+            ],
+            "PositionalConstraint": "EXACTLY"
+          }
+        }
+      ]
+    }
+  },
+  "Action": {
+    "Block": {
+      "CustomResponse": {
+        "ResponseCode": 403
+      }
+    }
+  },
+  "VisibilityConfig": {
+    "SampledRequestsEnabled": true,
+    "CloudWatchMetricsEnabled": true,
+    "MetricName": "employee-post-gender"
+  }
+}
