@@ -41,3 +41,5 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
 이렇게 vpc랑 regionㄹ도 추가하기
 
 alb 생성하면 cloudfront에 바로 연결하기
+
+그리고 제출할 때도 무조건 http로 https로하면 안됨
