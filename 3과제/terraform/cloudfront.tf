@@ -16,8 +16,8 @@ resource "aws_cloudfront_distribution" "cdn" {
   default_cache_behavior {
     viewer_protocol_policy = "allow-all"
     cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6" #CachingOptimized
-    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3"
-    allowed_methods = ["GET", "HEAD"]
+    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3" # All Viewer
+    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods = ["GET", "HEAD"]
     target_origin_id = aws_s3_bucket.static_s3_bucket.id
   }
