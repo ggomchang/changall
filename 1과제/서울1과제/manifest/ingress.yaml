@@ -5,6 +5,7 @@ metadata:
   namespace: wsi
   annotations:
     alb.ingress.kubernetes.io/load-balancer-name: wsi-alb
+    alb.ingress.kubernetes.io/tags: Name=wsi-alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/subnets: subnet-008f03fa6e002497a, subnet-0dffdc8a7ba87de2c
     alb.ingress.kubernetes.io/target-type: ip
